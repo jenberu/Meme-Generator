@@ -4,18 +4,27 @@ import"../styles/meme.css";
 import { useState } from "react";
 
 const Meme = () => {
-    const [memeimage,setMemeImage]=useState({})
+    const [meme, setMeme] = useState({
+        topText: "",
+        bottomText:"",
+        randomImage: "http://i.imgflip.com/1bij.jpg",
+    })
+    const [allMemeImages, setAllMemeImages] = useState(memesData)
+
     const getMemeImage = () => {
-        let randomIndex = Math.floor(Math.random() * 100);
-        const memeimage = memesData.data.memes[randomIndex];
-        setMemeImage(memeimage);
+        const memesArray = allMemeImages.data.memes;
+        const randomIndex = Math.floor(Math.random()*memesArray.length);
+        const memeimageurl = memesArray[randomIndex].url;
+        setMeme(prevMeme => (
+            {...prevMeme,
+                randomImage: memeimageurl,
+            }
+        ));
     }
-    const handleSubmit = (e) => {
-        e.preventDefault();
-    }
+   
     return (
         <main>
-            <form className="form" onSubmit={handleSubmit}>
+            <div className="form" >
                 
             <input 
                 type="text"
@@ -36,13 +45,10 @@ const Meme = () => {
             >
                 Get a new meme image 🖼
             </button>
-            </form>
-            <div className="meme--image">
-                gvjhjk
-                <img src={memeimage.url}
-                    width={memeimage.width}
-                     height={memeimage.height} alt=""/>
             </div>
+                <img className="meme--image"
+                    src={meme.randomImage}
+                      alt=""/>
     </main>
     );
 }
